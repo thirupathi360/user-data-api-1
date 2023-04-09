@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ad4a58ef-150f-4ff7-bbd1-f57f1c865639" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="b36aea64-46f3-4629-a383-53bff9054ce7" >
+		<http:request-connection host="reqres.in" protocol="HTTPS"/>
+	</http:request-config>
+	<flow name="user-data-apiFlow" doc:id="376ca7a5-d8c7-4f67-afaa-7dff1d0839fd" >
+		<http:listener doc:name="Listener" doc:id="54152bbd-af3a-46b1-b46d-262315d1f89a" config-ref="HTTP_Listener_config" path="/user"/>
+		<logger level="DEBUG" doc:name="Request Received" doc:id="dcdbd3ab-55f4-45de-8c53-526501129aae" message="Request Received"/>
+		<http:request method="GET" doc:name="Request" doc:id="82cd46ef-8a39-484d-aa5f-8035fae3c1c3" config-ref="HTTP_Request_configuration" path="/api/users"/>
+		<logger level="DEBUG" doc:name="Request Response" doc:id="14c1dd58-bc57-4449-9b09-4814c22dcf18" message="Request Response" />
+		<ee:transform doc:name="Transform Message" doc:id="47cea3ee-372d-4d0d-8af6-e56f818f99df" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+---
+{
+	"data": payload.data[0]
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
