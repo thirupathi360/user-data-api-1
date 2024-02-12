@@ -38,17 +38,19 @@
 				<version>3.4.2</version>
 				<extensions>true</extensions>
 				<configuration>
-					<cloudHubDeployment>
-						<uri>https://anypoint.mulesoft.com</uri>
-						<muleVersion>${mule.version}</muleVersion>
-						<username>${anypoint.username}</username>
-						<password>${anypoint.password}</password>
-						<applicationName>${appname}</applicationName>
-						<environment>${environment}</environment>
-						<workers>${workers}</workers>
-						<workerType>${vCore}</workerType>
-						<objectStoreV2>true</objectStoreV2>
-					</cloudHubDeployment>
+				<cloudhub2Deployment>
+      <uri>https://anypoint.mulesoft.com</uri>
+      <provider>MC</provider>
+      <environment>${environment}</environment>
+      <target>${targetName}</target>
+      <muleVersion>${mule.version}</muleVersion>
+      <username>${anypoint.username}</username>
+      <password>${anypoint.password}</password>
+      <applicationName>${appName}</applicationName>
+      <replicas>1</replicas>
+      <vCores>${vCore}</vCores>
+      
+    </cloudhub2Deployment>
 				</configuration>
 			</plugin>
 		</plugins>
